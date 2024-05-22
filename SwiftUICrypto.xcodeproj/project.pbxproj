@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF29F89E2BFE70040020C378 /* CoinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF29F89D2BFE70040020C378 /* CoinModel.swift */; };
 		BF6500352BEE7FA000082217 /* SwiftUICryptoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6500342BEE7FA000082217 /* SwiftUICryptoApp.swift */; };
 		BF6500372BEE7FA000082217 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6500362BEE7FA000082217 /* ContentView.swift */; };
 		BF65003C2BEE7FA100082217 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF65003B2BEE7FA100082217 /* Preview Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BF29F89D2BFE70040020C378 /* CoinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinModel.swift; sourceTree = "<group>"; };
 		BF6500312BEE7FA000082217 /* SwiftUICrypto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUICrypto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF6500342BEE7FA000082217 /* SwiftUICryptoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUICryptoApp.swift; sourceTree = "<group>"; };
 		BF6500362BEE7FA000082217 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -40,6 +42,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF29F89C2BFE6FB20020C378 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BF29F89D2BFE70040020C378 /* CoinModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		BF6500282BEE7FA000082217 = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +71,7 @@
 			children = (
 				BF6500342BEE7FA000082217 /* SwiftUICryptoApp.swift */,
 				BFB0021D2BF2482A00C6BD34 /* Extensions */,
+				BF29F89C2BFE6FB20020C378 /* Models */,
 				BFB002202BF24BEB00C6BD34 /* Core */,
 				BF6500362BEE7FA000082217 /* ContentView.swift */,
 				BFB0021B2BF240FD00C6BD34 /* Assets.xcassets */,
@@ -199,6 +210,7 @@
 			files = (
 				BFB002282BF24D0300C6BD34 /* CircleButtonView.swift in Sources */,
 				BF6500372BEE7FA000082217 /* ContentView.swift in Sources */,
+				BF29F89E2BFE70040020C378 /* CoinModel.swift in Sources */,
 				BFB002262BF24C5F00C6BD34 /* HomeView.swift in Sources */,
 				BF6500352BEE7FA000082217 /* SwiftUICryptoApp.swift in Sources */,
 				BFB002442BF26D2200C6BD34 /* CircleButtonAnimation.swift in Sources */,
