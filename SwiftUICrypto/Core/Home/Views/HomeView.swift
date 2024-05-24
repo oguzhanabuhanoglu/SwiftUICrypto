@@ -9,9 +9,11 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @EnvironmentObject private var vm: HomeViewModel
     @State private var showPortfolio: Bool = false
     
     var body: some View {
+        
         ZStack {
             
             // background layer
@@ -20,17 +22,30 @@ struct HomeView: View {
             
             //content layer
             VStack{
+                
                 headerView
+                
                 Spacer(minLength: 0)
+                
+                columnTitles
+                
+                if !showPortfolio {
+                    allCoinsList
+                        .transition(.move(edge: .leading))
+                }else{
+                    portfolioCoinsList
+                        .transition(.move(edge: .trailing))
+                }
+                
             }
-            
-            
         }
+        
     }
 }
 
 #Preview {
     HomeView()
+        .environmentObject(HomeViewModel())
 }
 
 extension HomeView {
@@ -60,5 +75,42 @@ extension HomeView {
             
         }
         .padding(.horizontal)
+    }
+    
+    
+    private var columnTitles: some View {
+        HStack{
+            Text("Coins")
+            Spacer()
+            if showPortfolio {
+                Text("Holdings")
+            }
+            Text("Price")
+                .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
+        }
+        .font(.caption)
+        .foregroundColor(Color.theme.secondaryText)
+        .padding(.horizontal)
+    }
+    
+    
+    private var allCoinsList: some View {
+        List{
+            ForEach(vm.allCoins) { coin in
+                CoinRowView(coin: coin, showHoldingColumn: false)
+                    .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
+            }
+        }
+        .listStyle(.plain)
+    }
+    
+    private var portfolioCoinsList: some View {
+        List{
+            ForEach(vm.allCoins) { coin in
+                CoinRowView(coin: coin, showHoldingColumn: true)
+                    .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
+            }
+        }
+        .listStyle(.plain)
     }
 }
