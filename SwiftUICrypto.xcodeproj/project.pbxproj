@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		BF29F89E2BFE70040020C378 /* CoinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF29F89D2BFE70040020C378 /* CoinModel.swift */; };
+		BF56596C2C00B05600E5280B /* CoinRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56596B2C00B05600E5280B /* CoinRowView.swift */; };
+		BF56596E2C00B0B200E5280B /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56596D2C00B0B200E5280B /* PreviewProvider.swift */; };
+		BF5659702C00BD3600E5280B /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF56596F2C00BD3600E5280B /* Double.swift */; };
 		BF6500352BEE7FA000082217 /* SwiftUICryptoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6500342BEE7FA000082217 /* SwiftUICryptoApp.swift */; };
 		BF6500372BEE7FA000082217 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6500362BEE7FA000082217 /* ContentView.swift */; };
 		BF65003C2BEE7FA100082217 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF65003B2BEE7FA100082217 /* Preview Assets.xcassets */; };
@@ -20,6 +23,9 @@
 
 /* Begin PBXFileReference section */
 		BF29F89D2BFE70040020C378 /* CoinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinModel.swift; sourceTree = "<group>"; };
+		BF56596B2C00B05600E5280B /* CoinRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinRowView.swift; sourceTree = "<group>"; };
+		BF56596D2C00B0B200E5280B /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
+		BF56596F2C00BD3600E5280B /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		BF6500312BEE7FA000082217 /* SwiftUICrypto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUICrypto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF6500342BEE7FA000082217 /* SwiftUICryptoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUICryptoApp.swift; sourceTree = "<group>"; };
 		BF6500362BEE7FA000082217 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -69,11 +75,11 @@
 		BF6500332BEE7FA000082217 /* SwiftUICrypto */ = {
 			isa = PBXGroup;
 			children = (
+				BF6500362BEE7FA000082217 /* ContentView.swift */,
 				BF6500342BEE7FA000082217 /* SwiftUICryptoApp.swift */,
 				BFB0021D2BF2482A00C6BD34 /* Extensions */,
 				BF29F89C2BFE6FB20020C378 /* Models */,
 				BFB002202BF24BEB00C6BD34 /* Core */,
-				BF6500362BEE7FA000082217 /* ContentView.swift */,
 				BFB0021B2BF240FD00C6BD34 /* Assets.xcassets */,
 				BF65003A2BEE7FA100082217 /* Preview Content */,
 			);
@@ -92,6 +98,8 @@
 			isa = PBXGroup;
 			children = (
 				BFB0021E2BF2483F00C6BD34 /* Color.swift */,
+				BF56596D2C00B0B200E5280B /* PreviewProvider.swift */,
+				BF56596F2C00BD3600E5280B /* Double.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -118,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				BFB002252BF24C5F00C6BD34 /* HomeView.swift */,
+				BF56596B2C00B05600E5280B /* CoinRowView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -208,12 +217,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF56596C2C00B05600E5280B /* CoinRowView.swift in Sources */,
 				BFB002282BF24D0300C6BD34 /* CircleButtonView.swift in Sources */,
 				BF6500372BEE7FA000082217 /* ContentView.swift in Sources */,
 				BF29F89E2BFE70040020C378 /* CoinModel.swift in Sources */,
 				BFB002262BF24C5F00C6BD34 /* HomeView.swift in Sources */,
 				BF6500352BEE7FA000082217 /* SwiftUICryptoApp.swift in Sources */,
 				BFB002442BF26D2200C6BD34 /* CircleButtonAnimation.swift in Sources */,
+				BF56596E2C00B0B200E5280B /* PreviewProvider.swift in Sources */,
+				BF5659702C00BD3600E5280B /* Double.swift in Sources */,
 				BFB0021F2BF2483F00C6BD34 /* Color.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
