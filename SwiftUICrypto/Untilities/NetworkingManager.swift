@@ -18,8 +18,6 @@ class NetworkingManager {
             switch self {
             case .badURLResponse: return "[🔥]Bad Response From URL."
             case .unknown: return "[⚠️]Unknown Error Occured"
-            default:
-                <#code#>
             }
         }
     }
