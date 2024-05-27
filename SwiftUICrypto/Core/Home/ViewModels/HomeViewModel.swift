@@ -13,6 +13,8 @@ class HomeViewModel: ObservableObject {
     @Published var allCoins: [CoinModel] = []
     @Published var portfolioCoins: [CoinModel] = []
     
+    @Published var searchText: String = ""
+    
     // To get api call resutls from data service
     private let dataService = CoinDataService()
     private var cancellables = Set<AnyCancellable>()

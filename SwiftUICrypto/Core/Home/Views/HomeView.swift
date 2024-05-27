@@ -25,7 +25,7 @@ struct HomeView: View {
                 
                 headerView
                 
-                Spacer(minLength: 0)
+                SearchBar(searchText: $vm.searchText)
                 
                 columnTitles
                 
