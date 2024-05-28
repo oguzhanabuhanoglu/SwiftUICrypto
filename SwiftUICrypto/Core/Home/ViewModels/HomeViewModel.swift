@@ -21,26 +21,44 @@ class HomeViewModel: ObservableObject {
     
     init(){
         addSubscribers()
-        
         //this was for mock coin
         /*DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
-            self.allCoins.append(DeveloperPreview.instance.coin)
-            self.portfolioCoins.append(DeveloperPreview.instance.coin)
+         self.allCoins.append(DeveloperPreview.instance.coin)
+         self.portfolioCoins.append(DeveloperPreview.instance.coin)
          }
          */
-        }
-    
-    
-    func addSubscribers() {
-        dataService.$allCoins
-            .sink { [weak self] (returnedCoins) in
-                self?.allCoins = returnedCoins
-            }
-            .store(in: &cancellables)
     }
     
     
+    func addSubscribers() {
+        
+        // updates allCoins
+        $searchText
+            .combineLatest(dataService.$allCoins)
+            // hızlı işlemler için 0.5 saniye es verip kodun sonrasını ona göre çalıştıracak
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .map { (text, startingCoins) -> [CoinModel] in
+                filteredCoins(text: text, startingCoins: startingCoins)
+            }
+            .sink { [weak self] (returnedCoins) in
+                self?.allCoins = returnedCoins
+            }
+        .store(in: &cancellables)    }
     
+     }
+
+
+private func filteredCoins(text: String, startingCoins: [CoinModel]) -> [CoinModel] {
+    guard !text.isEmpty else {
+        return startingCoins
+    }
+    
+    let lowercasedText = text.lowercased()
+    
+    return startingCoins.filter { coin -> Bool in
+        return coin.name.lowercased().contains(lowercasedText) ||
+        coin.symbol.lowercased().contains(lowercasedText) ||
+        coin.id.lowercased().contains(lowercasedText)
+    }
 }
-    
 
