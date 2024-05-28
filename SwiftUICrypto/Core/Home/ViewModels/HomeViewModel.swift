@@ -10,30 +10,21 @@ import Combine
 
 class HomeViewModel: ObservableObject {
     
-    @Published var statistics: [StatisticsModel] = [
-        StatisticsModel(title: "Title", value: "Value", percentageChange: 1),
-        StatisticsModel(title: "Title", value: "Value"),
-        StatisticsModel(title: "Title", value: "Value"),
-        StatisticsModel(title: "Title", value: "Value", percentageChange: -7)
-    ]
-    
+    @Published var statistics: [StatisticsModel] = []
     @Published var allCoins: [CoinModel] = []
+    
     @Published var portfolioCoins: [CoinModel] = []
     
     @Published var searchText: String = ""
     
     // To get api call resutls from data service
-    private let dataService = CoinDataService()
+    private let coinDataService = CoinDataService()
+    private let marketDataService = MarketDataService()
+    
     private var cancellables = Set<AnyCancellable>()
     
     init(){
         addSubscribers()
-        //this was for mock coin
-        /*DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
-         self.allCoins.append(DeveloperPreview.instance.coin)
-         self.portfolioCoins.append(DeveloperPreview.instance.coin)
-         }
-         */
     }
     
     
@@ -41,20 +32,29 @@ class HomeViewModel: ObservableObject {
         
         // updates allCoins
         $searchText
-            .combineLatest(dataService.$allCoins)
-            // hızlı işlemler için 0.5 saniye es verip kodun sonrasını ona göre çalıştıracak
-            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .combineLatest(coinDataService.$allCoins)
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main) // hızlı işlemler için 0.5 saniye es verip kodun sonrasını ona göre çalıştıracak
             .map { (text, startingCoins) -> [CoinModel] in
                 filteredCoins(text: text, startingCoins: startingCoins)
             }
             .sink { [weak self] (returnedCoins) in
                 self?.allCoins = returnedCoins
             }
-        .store(in: &cancellables)    }
+            .store(in: &cancellables)
+        
+
+        marketDataService.$marketData
+            .map(mapGlobalMarketData)
+            .sink { [weak self] (returnedStats) in
+                self?.statistics = returnedStats
+            }
+            .store(in: &cancellables)
+    }
     
-     }
+}
 
 
+// MARK: mapping coins
 private func filteredCoins(text: String, startingCoins: [CoinModel]) -> [CoinModel] {
     guard !text.isEmpty else {
         return startingCoins
@@ -67,5 +67,27 @@ private func filteredCoins(text: String, startingCoins: [CoinModel]) -> [CoinMod
         coin.symbol.lowercased().contains(lowercasedText) ||
         coin.id.lowercased().contains(lowercasedText)
     }
+}
+
+// MARK: mapping market data
+private func mapGlobalMarketData(marketDataModel: MarketDataModel?) -> [StatisticsModel] {
+    var stats: [StatisticsModel] = []
+    
+    guard let data = marketDataModel else {
+        return stats
+    }
+    
+    let marketCap = StatisticsModel(title: "MarketCap", value: data.marketCap, percentageChange: data.marketCapChangePercentage24HUsd)
+    let volume = StatisticsModel(title: "24H Volume", value: data.volume)
+    let btcDominance = StatisticsModel(title: "BTC Dominance", value: data.btcDominance)
+    let portfolio = StatisticsModel(title: "Portfolio Value", value: "$0.00", percentageChange: 0)
+    
+    stats.append(contentsOf: [
+        marketCap,
+        volume,
+        btcDominance,
+        portfolio
+    ])
+    return stats
 }
 
