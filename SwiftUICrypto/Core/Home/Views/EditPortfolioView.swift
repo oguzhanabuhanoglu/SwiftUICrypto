@@ -37,6 +37,16 @@ struct EditPortfolioView: View {
                     saveButton
                 }
             })
+            /*.onChange(of: vm.searchText ,perform: { value in
+                if value == "" {
+                    selectedCoin = nil
+                }
+            })*/
+            .onChange(of: vm.searchText, initial: false) {
+                if vm.searchText == "" {
+                    selectedCoin = nil
+                }
+            }
             
         }
     }
@@ -62,7 +72,7 @@ extension EditPortfolioView {
                         .padding(4)
                         .onTapGesture {
                             withAnimation(.easeIn) {
-                                selectedCoin = coin
+                                updateSelectedCoin(coin: coin)
                             }
                         }
                         .background(
@@ -77,6 +87,18 @@ extension EditPortfolioView {
         })
     }
     
+    private func updateSelectedCoin(coin: CoinModel) {
+        selectedCoin = coin
+        
+        if let portfolioCoin = vm.portfolioCoins.first(where: { $0.id == coin.id }),
+           let amount = portfolioCoin.currentHoldings {
+            quantityText = "\(amount)"
+        }else{
+            quantityText = ""
+        }
+            
+        
+    }
     private var portfolioInputSection: some View {
         VStack(spacing: 20){
             HStack{
@@ -128,8 +150,12 @@ extension EditPortfolioView {
     
     private func saveButtonClicked() {
         
-        guard let coin = selectedCoin else { return }
+        guard let coin = selectedCoin,
+              let amount = Double(quantityText) 
+              else { return }
+        
         // save coin to portfolio
+        vm.updatePortfolio(coin: coin, amount: amount)
         
         //show checkmark
         withAnimation(.easeIn) {

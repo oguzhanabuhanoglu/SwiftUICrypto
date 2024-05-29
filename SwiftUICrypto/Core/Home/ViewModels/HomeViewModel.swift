@@ -10,9 +10,8 @@ import Combine
 
 class HomeViewModel: ObservableObject {
     
-    @Published var statistics: [StatisticsModel] = []
     @Published var allCoins: [CoinModel] = []
-    
+    @Published var statistics: [StatisticsModel] = []
     @Published var portfolioCoins: [CoinModel] = []
     
     @Published var searchText: String = ""
@@ -20,6 +19,7 @@ class HomeViewModel: ObservableObject {
     // To get api call resutls from data service
     private let coinDataService = CoinDataService()
     private let marketDataService = MarketDataService()
+    private let portfolioDataService = PortfolioDataService()
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -43,15 +43,38 @@ class HomeViewModel: ObservableObject {
             .store(in: &cancellables)
         
 
+        // updates market data
         marketDataService.$marketData
             .map(mapGlobalMarketData)
             .sink { [weak self] (returnedStats) in
                 self?.statistics = returnedStats
             }
             .store(in: &cancellables)
+        
+        // updates portfoliCoins
+        $allCoins
+            .combineLatest(portfolioDataService.$savedEntities)
+            .map { (coinModels, portfolioEntities) -> [CoinModel] in
+                coinModels.compactMap { (coin) -> CoinModel? in
+                    guard let entity = portfolioEntities.first(where: { $0.id == coin.id }) else {
+                        return nil
+                    }
+                    return coin.updateHoldings(amount: entity.amount)
+                }
+            }
+            .sink { [weak self] (returnedCoins) in
+                self?.portfolioCoins = returnedCoins
+            }
+            .store(in: &cancellables)
+    }
+    
+    
+    func updatePortfolio(coin: CoinModel, amount: Double) {
+        portfolioDataService.updatePorfolio(coin: coin, amount: amount)
     }
     
 }
+
 
 
 // MARK: mapping coins
