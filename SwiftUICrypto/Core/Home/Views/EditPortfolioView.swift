@@ -30,10 +30,10 @@ struct EditPortfolioView: View {
             }
             .navigationTitle("Edit Portfolio")
             .toolbar(content: {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     XMarkButton()
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     saveButton
                 }
             })
