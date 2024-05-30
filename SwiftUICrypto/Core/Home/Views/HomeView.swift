@@ -12,7 +12,10 @@ struct HomeView: View {
     @EnvironmentObject private var vm: HomeViewModel
     
     @State private var showPortfolio: Bool = false
-    @State private var showPortfolioView: Bool = false
+    @State private var showEditPortfolioView: Bool = false
+    
+    @State private var selectedCoin: CoinModel? = nil
+    @State private var showDetailsView: Bool = false
     
     var body: some View {
         
@@ -21,7 +24,7 @@ struct HomeView: View {
             // background layer
             Color.theme.background
                 .ignoresSafeArea()
-                .sheet(isPresented: $showPortfolioView, content: {
+                .sheet(isPresented: $showEditPortfolioView, content: {
                     EditPortfolioView()
                 })
             
@@ -42,6 +45,12 @@ struct HomeView: View {
                 }
                 
             }
+            .background(
+                NavigationLink(
+                    destination: DetailLoadingView(coin: $selectedCoin),
+                    isActive: $showDetailsView,
+                    label: { EmptyView() })
+            )
         }
         
     }
@@ -61,7 +70,7 @@ extension HomeView {
                 .animation(.none)
                 .onTapGesture {
                     if showPortfolio {
-                        showPortfolioView.toggle()
+                        showEditPortfolioView.toggle()
                     }
                 }
                 .background(
@@ -150,6 +159,9 @@ extension HomeView {
             ForEach(vm.allCoins) { coin in
                 CoinRowView(coin: coin, showHoldingColumn: false)
                     .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
+                    .onTapGesture {
+                        segue(coin: coin)
+                    }
             }
         }
         .listStyle(.plain)
@@ -160,8 +172,16 @@ extension HomeView {
             ForEach(vm.portfolioCoins) { coin in
                 CoinRowView(coin: coin, showHoldingColumn: true)
                     .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 0))
+                    .onTapGesture {
+                        segue(coin: coin)
+                    }
             }
         }
         .listStyle(.plain)
+    }
+    
+    private func segue(coin: CoinModel) {
+        selectedCoin = coin
+        showDetailsView.toggle()
     }
 }
