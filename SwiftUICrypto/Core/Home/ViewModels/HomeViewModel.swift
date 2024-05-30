@@ -125,9 +125,8 @@ class HomeViewModel: ObservableObject {
         case .reversedHoldings:
             return coins.sorted(by: { $0.currentHoldingsValue < $1.currentHoldingsValue })
         default:
-            <#code#>
+            return coins
         }
-    
     }
     
     
