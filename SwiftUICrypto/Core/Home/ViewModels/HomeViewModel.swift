@@ -13,6 +13,7 @@ class HomeViewModel: ObservableObject {
     @Published var allCoins: [CoinModel] = []
     @Published var statistics: [StatisticsModel] = []
     @Published var portfolioCoins: [CoinModel] = []
+    @Published var sortOptions: SortOptions = .holdings
     
     @Published var searchText: String = ""
     var isLoading: Bool = false
@@ -24,6 +25,10 @@ class HomeViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
+    enum SortOptions {
+        case rank, reversedRank, holdings, reversedHoldings, price, reversedPrice
+    }
+    
     init(){
         addSubscribers()
     }
@@ -33,11 +38,9 @@ class HomeViewModel: ObservableObject {
         
         // updates allCoins
         $searchText
-            .combineLatest(coinDataService.$allCoins)
+            .combineLatest(coinDataService.$allCoins, $sortOptions)
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main) // hızlı işlemler için 0.5 saniye es verip kodun sonrasını ona göre çalıştıracak
-            .map { (text, startingCoins) -> [CoinModel] in
-                filteredCoins(text: text, startingCoins: startingCoins)
-            }
+            .map(filterAndSortCoins)
             .sink { [weak self] (returnedCoins) in
                 self?.allCoins = returnedCoins
             }
@@ -84,59 +87,80 @@ class HomeViewModel: ObservableObject {
         HapticManager.notification(type: .success)
     }
     
-}
+    // MARK: mapping coins
+    private func filterAndSortCoins(text: String, startingCoins: [CoinModel], sort: SortOptions) -> [CoinModel] {
+        let filteredCoins = filteredCoins(text: text, startingCoins: startingCoins)
+        let sortedCoins = sortCoins(sort: sort, coins: filteredCoins)
+        return sortedCoins
+    }
 
-
-
-// MARK: mapping coins
-private func filteredCoins(text: String, startingCoins: [CoinModel]) -> [CoinModel] {
-    guard !text.isEmpty else {
-        return startingCoins
+    private func filteredCoins(text: String, startingCoins: [CoinModel]) -> [CoinModel] {
+        guard !text.isEmpty else {
+            return startingCoins
+        }
+        
+        let lowercasedText = text.lowercased()
+        
+        return startingCoins.filter { coin -> Bool in
+            return coin.name.lowercased().contains(lowercasedText) ||
+            coin.symbol.lowercased().contains(lowercasedText) ||
+            coin.id.lowercased().contains(lowercasedText)
+        }
     }
     
-    let lowercasedText = text.lowercased()
-    
-    return startingCoins.filter { coin -> Bool in
-        return coin.name.lowercased().contains(lowercasedText) ||
-        coin.symbol.lowercased().contains(lowercasedText) ||
-        coin.id.lowercased().contains(lowercasedText)
+    private func sortCoins(sort: SortOptions, coins: [CoinModel]) -> [CoinModel] {
+        switch sort {
+        case .rank, .holdings:
+            return coins.sorted(by: { $0.rank < $1.rank })
+        case .reversedRank, .reversedHoldings:
+            return coins.sorted(by: { $0.rank > $1.rank })
+        case .price:
+            return coins.sorted(by: { $0.currentPrice > $1.currentPrice })
+        case .reversedPrice:
+            return coins.sorted(by: { $0.currentPrice < $1.currentPrice })
+        }
     }
-}
-
-// MARK: mapping market data
-private func mapGlobalMarketData(marketDataModel: MarketDataModel?, portfolioCoins: [CoinModel]) -> [StatisticsModel] {
-    var stats: [StatisticsModel] = []
     
-    guard let data = marketDataModel else {
+
+    // MARK: mapping market data
+    private func mapGlobalMarketData(marketDataModel: MarketDataModel?, portfolioCoins: [CoinModel]) -> [StatisticsModel] {
+        var stats: [StatisticsModel] = []
+        
+        guard let data = marketDataModel else {
+            return stats
+        }
+        
+        let marketCap = StatisticsModel(title: "MarketCap", value: data.marketCap, percentageChange: data.marketCapChangePercentage24HUsd)
+        let volume = StatisticsModel(title: "24H Volume", value: data.volume)
+        let btcDominance = StatisticsModel(title: "BTC Dominance", value: data.btcDominance)
+        
+        let portfolioValue = portfolioCoins.map({ $0.currentHoldingsValue }).reduce(0, +)
+        
+        let previousValue = portfolioCoins
+            .map { coin -> Double in
+                let currentValue = coin.currentHoldingsValue
+                let percentChange = (coin.priceChangePercentage24H) / 100
+                let previousValue = currentValue / (1 + percentChange)
+                return previousValue
+            }
+            .reduce(0, +)
+        
+        let percentageChange = ((portfolioValue - previousValue) / previousValue) * 100
+           
+        
+        let portfolio = StatisticsModel(title: "Portfolio Value", value: portfolioValue.asCurrencyWith6Decimals(), percentageChange: percentageChange)
+        
+        stats.append(contentsOf: [
+            marketCap,
+            volume,
+            btcDominance,
+            portfolio
+        ])
         return stats
     }
-    
-    let marketCap = StatisticsModel(title: "MarketCap", value: data.marketCap, percentageChange: data.marketCapChangePercentage24HUsd)
-    let volume = StatisticsModel(title: "24H Volume", value: data.volume)
-    let btcDominance = StatisticsModel(title: "BTC Dominance", value: data.btcDominance)
-    
-    let portfolioValue = portfolioCoins.map({ $0.currentHoldingsValue }).reduce(0, +)
-    
-    let previousValue = portfolioCoins
-        .map { coin -> Double in
-            let currentValue = coin.currentHoldingsValue
-            let percentChange = (coin.priceChangePercentage24H) / 100
-            let previousValue = currentValue / (1 + percentChange)
-            return previousValue
-        }
-        .reduce(0, +)
-    
-    let percentageChange = ((portfolioValue - previousValue) / previousValue) * 100
-       
-    
-    let portfolio = StatisticsModel(title: "Portfolio Value", value: portfolioValue.asCurrencyWith6Decimals(), percentageChange: percentageChange)
-    
-    stats.append(contentsOf: [
-        marketCap,
-        volume,
-        btcDominance,
-        portfolio
-    ])
-    return stats
 }
+
+
+
+
 
