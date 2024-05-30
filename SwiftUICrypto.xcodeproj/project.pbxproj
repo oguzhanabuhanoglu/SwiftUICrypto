@@ -181,14 +181,6 @@
 			path = CoinImage;
 			sourceTree = "<group>";
 		};
-		BF8270452C04F60500723C71 /* SearchBar */ = {
-			isa = PBXGroup;
-			children = (
-				BF8270432C04F5FC00723C71 /* SearchBar.swift */,
-			);
-			path = SearchBar;
-			sourceTree = "<group>";
-		};
 		BF92040E2C0925C9008325E2 /* Deatail */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,7 +259,7 @@
 			children = (
 				BF9DBA452C074F140021A188 /* XMarkButton.swift */,
 				BF9DBA3B2C06074B0021A188 /* StatisticView.swift */,
-				BF8270452C04F60500723C71 /* SearchBar */,
+				BF8270432C04F5FC00723C71 /* SearchBar.swift */,
 				BF8270352C0271B700723C71 /* CoinImage */,
 				BF8270342C0271A900723C71 /* CircleButton */,
 			);
