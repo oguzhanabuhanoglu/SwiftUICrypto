@@ -46,22 +46,19 @@ class HomeViewModel: ObservableObject {
             }
             .store(in: &cancellables)
         
+        
         // updates portfoliCoins
+        // i already subscribed to sorted and filtered allCoins here so i just need to add holding sorting here
         $allCoins
             .combineLatest(portfolioDataService.$savedEntities)
-            .map { (coinModels, portfolioEntities) -> [CoinModel] in
-                coinModels.compactMap { (coin) -> CoinModel? in
-                    guard let entity = portfolioEntities.first(where: { $0.id == coin.id }) else {
-                        return nil
-                    }
-                    return coin.updateHoldings(amount: entity.amount)
-                }
-            }
+            .map(mapPortfolioCoins)
             .sink { [weak self] (returnedCoins) in
-                self?.portfolioCoins = returnedCoins
+                guard let self = self else { return }
+                self.portfolioCoins = self.sortPortfolioCoinsIfNeeded(coins: returnedCoins)
             }
             .store(in: &cancellables)
 
+        
         // updates market data
         marketDataService.$marketData
             .combineLatest($portfolioCoins)
@@ -121,6 +118,28 @@ class HomeViewModel: ObservableObject {
         }
     }
     
+    private func sortPortfolioCoinsIfNeeded(coins: [CoinModel]) -> [CoinModel] {
+        switch sortOptions {
+        case .holdings:
+            return coins.sorted(by: { $0.currentHoldingsValue > $1.currentHoldingsValue })
+        case .reversedHoldings:
+            return coins.sorted(by: { $0.currentHoldingsValue < $1.currentHoldingsValue })
+        default:
+            <#code#>
+        }
+    
+    }
+    
+    
+    // MARK: mapping portfolio coins
+    private func mapPortfolioCoins(coins: [CoinModel], portfolioEntities: [PortfolioEntity]) -> [CoinModel] {
+        coins.compactMap { (coin) -> CoinModel? in
+            guard let entity = portfolioEntities.first(where: { $0.id == coin.id }) else {
+                return nil
+            }
+            return coin.updateHoldings(amount: entity.amount)
+        }
+    }
 
     // MARK: mapping market data
     private func mapGlobalMarketData(marketDataModel: MarketDataModel?, portfolioCoins: [CoinModel]) -> [StatisticsModel] {
