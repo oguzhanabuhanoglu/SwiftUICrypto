@@ -10,11 +10,15 @@ import Combine
 
 class CoinDetailViewModel: ObservableObject {
     
+    let coin: CoinModel
+    
     private let coinDetailDataService: CoinDetailDataService
     private var cancelables = Set<AnyCancellable>()
     
     init(coin: CoinModel) {
+        self.coin = coin
         self.coinDetailDataService = CoinDetailDataService(coin: coin)
+        addSubscriber()
     }
     
     private func addSubscriber() {

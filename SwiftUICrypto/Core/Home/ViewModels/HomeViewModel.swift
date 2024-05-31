@@ -129,7 +129,6 @@ class HomeViewModel: ObservableObject {
         }
     }
     
-    
     // MARK: mapping portfolio coins
     private func mapPortfolioCoins(coins: [CoinModel], portfolioEntities: [PortfolioEntity]) -> [CoinModel] {
         coins.compactMap { (coin) -> CoinModel? in
