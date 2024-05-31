@@ -50,11 +50,11 @@ struct DetailsView: View {
                 
                 LazyVGrid(columns: columns,
                           alignment: .leading,
-                          spacing: nil,
+                          spacing: 30,
                           pinnedViews: [],
                           content: {
-                    ForEach(0..<4) { _ in
-                        StatisticView(stat: StatisticsModel(title: "Title", value: "Value"))
+                    ForEach(vm.overviewStatistics) { stat in
+                        StatisticView(stat: stat)
                     }
                 })
                 
@@ -67,11 +67,11 @@ struct DetailsView: View {
                 
                 LazyVGrid(columns: columns,
                           alignment: .leading,
-                          spacing: nil,
+                          spacing: 30,
                           pinnedViews: [],
                           content: {
-                    ForEach(0..<6) { _ in
-                        StatisticView(stat: StatisticsModel(title: "Title", value: "Value"))
+                    ForEach(vm.additionalStatistics) { stat in
+                        StatisticView(stat: stat)
                     }
                 })
                 
