@@ -12,6 +12,9 @@ class CoinDetailViewModel: ObservableObject {
     
     @Published var overviewStatistics: [StatisticsModel] = []
     @Published var additionalStatistics: [StatisticsModel] = []
+    @Published var coinDescription: String?
+    @Published var webSiteURL: String?
+    @Published var redditURL: String?
     
     @Published var coin: CoinModel
     
@@ -32,6 +35,14 @@ class CoinDetailViewModel: ObservableObject {
             .sink { [weak self] (returnedArrays) in
                 self?.overviewStatistics = returnedArrays.overview
                 self?.additionalStatistics = returnedArrays.additional
+            }
+            .store(in: &cancelables)
+        
+        coinDetailDataService.$coinDetails
+            .sink { [weak self] (returnedCoinDetails) in
+                self?.coinDescription = returnedCoinDetails?.readableDescription
+                self?.webSiteURL = returnedCoinDetails?.links?.homepage?.first
+                self?.redditURL = returnedCoinDetails?.links?.subredditURL
             }
             .store(in: &cancelables)
     }

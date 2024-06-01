@@ -23,6 +23,7 @@ struct DetailLoadingView: View {
 struct DetailsView: View {
     
     @StateObject var vm: CoinDetailViewModel
+    @State var showFullDescription: Bool = false
     
     private let columns: [GridItem] = [
         GridItem(.flexible()),
@@ -41,9 +42,10 @@ struct DetailsView: View {
             VStack {
                 ChartView(coin: vm.coin)
                     .padding(.vertical)
-                VStack(spacing: 15){
+                VStack(spacing: 10){
                     overviewTitle
                     Divider()
+                    description
                     overViewGrid
                     
                     additionalTitle
@@ -84,6 +86,31 @@ extension DetailsView {
             .bold()
             .foregroundColor(Color.theme.accent)
             .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    private var description: some View {
+        ZStack {
+            if let description = vm.coinDescription, !description.isEmpty {
+                VStack(alignment: .leading) {
+                    Text(description)
+                        .lineLimit(showFullDescription ? nil : 3)
+                        .font(.callout)
+                    
+                    Button {
+                        withAnimation(.easeInOut) {
+                            showFullDescription.toggle()
+                        }
+                    } label: {
+                        Text(showFullDescription ? "Show less" : "Read more...")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .padding(.vertical, 4)
+                    }
+                    .accentColor(.blue)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
     }
     
     private var overViewGrid: some View {
