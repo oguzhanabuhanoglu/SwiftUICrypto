@@ -51,6 +51,10 @@ struct DetailsView: View {
                     additionalTitle
                     Divider()
                     additionalGrid
+                    links
+                    
+                    
+                    
                 }
                 .padding()
             }
@@ -143,6 +147,21 @@ extension DetailsView {
                 StatisticView(stat: stat)
             }
         })
+    }
+    
+    private var links: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            if let webSiteURL = vm.webSiteURL, let url = URL(string: webSiteURL) {
+                Link("Website", destination: url)
+            }
+            
+            if let redditURL = vm.redditURL, let url = URL(string: redditURL) {
+                Link("Reddit", destination: url)
+            }
+        }
+        .accentColor(.blue)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .font(.headline)
     }
     
     private var navigationBarTrailingItem: some View {
