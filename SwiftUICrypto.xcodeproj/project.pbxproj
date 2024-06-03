@@ -33,6 +33,7 @@
 		BF92041E2C0B7D47008325E2 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92041D2C0B7D47008325E2 /* Date.swift */; };
 		BF9204202C0B908E008325E2 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF92041F2C0B908E008325E2 /* String.swift */; };
 		BF9204232C0DEB72008325E2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9204222C0DEB72008325E2 /* SettingsView.swift */; };
+		BF9204262C0DFDDB008325E2 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF9204252C0DFDDB008325E2 /* Launch Screen.storyboard */; };
 		BF9DBA382C0504520021A188 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9DBA372C0504520021A188 /* UIApplication.swift */; };
 		BF9DBA3A2C0605060021A188 /* StatisticsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9DBA392C0605060021A188 /* StatisticsModel.swift */; };
 		BF9DBA3C2C06074B0021A188 /* StatisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9DBA3B2C06074B0021A188 /* StatisticView.swift */; };
@@ -77,6 +78,7 @@
 		BF92041D2C0B7D47008325E2 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		BF92041F2C0B908E008325E2 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		BF9204222C0DEB72008325E2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BF9204252C0DFDDB008325E2 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		BF9DBA372C0504520021A188 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		BF9DBA392C0605060021A188 /* StatisticsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsModel.swift; sourceTree = "<group>"; };
 		BF9DBA3B2C06074B0021A188 /* StatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticView.swift; sourceTree = "<group>"; };
@@ -231,6 +233,14 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		BF9204242C0DFDCE008325E2 /* LaunchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				BF9204252C0DFDDB008325E2 /* Launch Screen.storyboard */,
+			);
+			path = LaunchScreen;
+			sourceTree = "<group>";
+		};
 		BFB0021D2BF2482A00C6BD34 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,6 +257,7 @@
 		BFB002202BF24BEB00C6BD34 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				BF9204242C0DFDCE008325E2 /* LaunchScreen */,
 				BFB002242BF24C4100C6BD34 /* Components */,
 				BFB002212BF24BF800C6BD34 /* Home */,
 				BF92040E2C0925C9008325E2 /* Deatail */,
@@ -353,6 +364,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF9204262C0DFDDB008325E2 /* Launch Screen.storyboard in Resources */,
 				BFB0021C2BF240FD00C6BD34 /* Assets.xcassets in Resources */,
 				BF65003C2BEE7FA100082217 /* Preview Assets.xcassets in Resources */,
 			);
@@ -542,6 +554,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -570,6 +583,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
