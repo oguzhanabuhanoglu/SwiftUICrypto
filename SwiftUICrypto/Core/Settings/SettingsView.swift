@@ -74,7 +74,7 @@ extension SettingsView {
                     .frame(width: 100, height: 100)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                 
-                Text("I started learning SwiftUI by following the Swiftful Thinking YouTube channel. The project benefits from multi-threading, publishers/subscribers, CoreData and NetworkingLayer.")
+                Text("The project benefits from multi-threading, publishers/subscribers and CoreData.")
                     .font(.callout)
                     .fontWeight(.medium)
             }
